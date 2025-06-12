@@ -5,64 +5,88 @@ import Controller.MesaController;
 import Controller.ReservaController;
 import Model.Cliente;
 import Model.Mesa;
+import View.InputHelper;
+
 
 public class MainView {
 
-    public static void iniciarSistema() {
-        int opcao;
 
+    public static void menuPrincipal() {
+        int opcao;
         do {
-            exibirMenu();
-            opcao = InputHelper.lerInt("Escolha uma opção: ");
-            verificarOpcao(opcao);
+            System.out.println("\n--- Sistema de Reserva de Mesas ---");
+            System.out.println("1. Cadastrar Cliente");
+            System.out.println("2. Listar Clientes");
+            System.out.println("3. Adicionar Mesa");
+            System.out.println("4. Listar Mesas");
+            System.out.println("5. Criar Reserva");
+            System.out.println("6. Listar Reservas");
+            System.out.println("7. Cancelar Reserva");
+            System.out.println("0. Sair");
+            System.out.print("Escolha uma opção: ");
+
+            opcao = InputHelper.getInt("");
+
+            switch (opcao) {
+                case 1:
+                    cadastrarCliente();
+                    break;
+                case 2:
+                    listarClientes();
+                    break;
+                case 3:
+                    adicionarMesa();
+                    break;
+                case 4:
+                    listarMesas();
+                    break;
+                case 5:
+                    criarReserva();
+                    break;
+                case 6:
+                    listarReservas();
+                    break;
+                case 7:
+                    cancelarReserva();
+                    break;
+                case 0:
+                    System.out.println("Saindo do sistema. Até mais!");
+                    break;
+                default:
+                    System.out.println("Opção inválida. Tente novamente.");
+            }
         } while (opcao != 0);
     }
 
-    private static void exibirMenu() {
-        System.out.println("\n=== Sistema de Reserva de Mesas ===");
-        System.out.println("1 - Cadastrar cliente");
-        System.out.println("2 - Adicionar mesa");
-        System.out.println("3 - Criar reserva");
-        System.out.println("4 - Listar clientes");
-        System.out.println("5 - Listar mesas");
-        System.out.println("6 - Listar reservas");
-        System.out.println("7 - Cancelar reserva");
-        System.out.println("0 - Sair");
-    }
-
-    private static void verificarOpcao(int opcao) {
-        switch (opcao) {
-            case 1 -> cadastrarCliente();
-            case 2 -> adicionarMesa();
-            case 3 -> criarReserva();
-            case 4 -> ClienteController.listarClientes();
-            case 5 -> MesaController.listarMesas();
-            case 6 -> ReservaController.listarReservas();
-            case 7 -> ReservaController.cancelarReserva();
-            case 0 -> System.out.println("Encerrando o sistema.");
-            default -> System.out.println("Opção inválida.");
-        }
-    }
-
     private static void cadastrarCliente() {
-        System.out.println("\n--- Cadastro de Cliente ---");
-        int id = InputHelper.lerInt("ID do cliente: ");
-        String nome = InputHelper.lerString("Nome: ");
-        String sobrenome = InputHelper.lerString("Sobrenome: ");
-        String telefone = InputHelper.lerString("Telefone: ");
+        System.out.println("\n--- Cadastrar Novo Cliente ---");
+        int id = InputHelper.getInt("Digite o ID do cliente: ");
+        String nome = InputHelper.getString("Digite o nome do cliente: ");
+        String sobrenome = InputHelper.getString("Digite o sobrenome do cliente: ");
+        String telefone = InputHelper.getString("Digite o telefone do cliente: ");
         ClienteController.cadastrarCliente(id, nome, sobrenome, telefone);
     }
 
+    private static void listarClientes() {
+        System.out.println("\n--- Clientes Cadastrados ---");
+        ClienteController.listarClientes();
+    }
+
     private static void adicionarMesa() {
-        System.out.println("\n--- Adicionar Mesa ---");
-        int numero = InputHelper.lerInt("Número da mesa: ");
-        int capacidade = InputHelper.lerInt("Capacidade da mesa: ");
+        System.out.println("\n--- Adicionar Nova Mesa ---");
+        int numero = InputHelper.getInt("Digite o número da mesa: ");
+        int capacidade = InputHelper.getInt("Digite a capacidade da mesa: ");
         MesaController.adicionarMesa(numero, capacidade);
     }
 
+    private static void listarMesas() {
+        System.out.println("\n--- Mesas Disponíveis ---");
+        MesaController.listarMesas();
+    }
+
     private static void criarReserva() {
-        System.out.println("\n--- Criar Reserva ---");
-        int idCliente = InputHelper.lerInt("ID do cliente: ");
+        System.out.println("\n--- Criar Nova Reserva ---");
+        int idCliente = InputHelper.getInt("Digite o ID do cliente: ");
         Cliente cliente = ClienteController.buscarCliente(idCliente);
 
         if (cliente == null) {
@@ -70,7 +94,7 @@ public class MainView {
             return;
         }
 
-        int numeroMesa = InputHelper.lerInt("Número da mesa: ");
+        int numeroMesa = InputHelper.getInt("Digite o número da mesa para a reserva: ");
         Mesa mesa = MesaController.buscarMesa(numeroMesa);
 
         if (mesa == null) {
@@ -78,16 +102,18 @@ public class MainView {
             return;
         }
 
-        String dataHora = InputHelper.lerString("Data e hora da reserva (dd/mm/yyyy hh:mm): ");
+        String dataHora = InputHelper.getString("Digite a data e hora da reserva (Ex: 12-06-2025 19:00): ");
         ReservaController.criarReserva(cliente, mesa, dataHora);
     }
 
-    private void cancelarReserva() {
-        int id = InputHelper.lerInt("ID da reserva a cancelar: ");
-        boolean sucesso = cancelarReserva(id);
-        if (!sucesso) {
-            System.out.println("Reserva não encontrada.");
-        }
+    private static void listarReservas() {
+        System.out.println("\n--- Reservas Existentes ---");
+        ReservaController.listarReservas();
     }
-}
+
+    private static void cancelarReserva() {
+        System.out.println("\n--- Cancelar Reserva ---");
+        int idReserva = InputHelper.getInt("Digite o ID da reserva a ser cancelada: ");
+        ReservaController.cancelarReserva(idReserva);
+    }
 }

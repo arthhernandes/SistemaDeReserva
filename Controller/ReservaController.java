@@ -13,27 +13,21 @@ public class ReservaController {
         if (mesa.isDisponivel()) {
             Reserva novaReserva = new Reserva(cliente, mesa, dataHora);
             reservas.add(novaReserva);
-            mesa.reservar(); // Atualiza estado da mesa
-            System.out.println("Reserva criada para " + cliente.getNome() + " na mesa " + mesa.getNumeroMesa() + " (ID reserva: " + novaReserva.getIdReserva() + ")");
+            mesa.reservar();
+            System.out.println(" Reserva criada para " + cliente.getNome() + " na mesa " + mesa.getNumeroMesa());
         } else {
             System.out.println("Mesa " + mesa.getNumeroMesa() + " está ocupada.");
         }
     }
 
     public static void listarReservas() {
-        if (reservas.isEmpty()) {
-            System.out.println("Nenhuma reserva cadastrada.");
-            return;
-        }
         for (Reserva reserva : reservas) {
-            System.out.println("Reserva ID: " + reserva.getIdReserva() +
-                    " | Cliente: " + reserva.getCliente().getNome() +
-                    " | Mesa: " + reserva.getMesa().getNumeroMesa() +
-                    " | Data: " + reserva.getDataHora());
+            System.out.println("Reserva ID: " + reserva.getIdReserva() + " | Cliente: " + reserva.getCliente().getNome() +
+                    " | Mesa: " + reserva.getMesa().getNumeroMesa() + " | Data: " + reserva.getDataHora());
         }
     }
 
-    public static void cancelarReserva(ArrayList<Reserva> reservas, int idReserva) {
+    public static void cancelarReserva(int idReserva) {
         Reserva reservaParaCancelar = null;
 
         for (Reserva reserva : reservas) {
@@ -49,9 +43,11 @@ public class ReservaController {
             System.out.println("Reserva ID " + idReserva + " foi cancelada com sucesso.");
         } else {
             System.out.println("Reserva com ID " + idReserva + " não encontrada.");
-
+        }
     }
-    }
 
+    public static ArrayList<Reserva> getReservas() {
+        return reservas;
+    }
 
 }
