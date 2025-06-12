@@ -1,12 +1,14 @@
 package Model;
 
 public class Reserva {
+    private static int contador = 1; // contador estático para IDs únicos
     private int idReserva;
     private Cliente cliente;
     private Mesa mesa;
     private String dataHora;
 
     public Reserva(Cliente cliente, Mesa mesa, String dataHora) {
+        this.idReserva = contador++;
         this.cliente = cliente;
         this.mesa = mesa;
         this.dataHora = dataHora;
