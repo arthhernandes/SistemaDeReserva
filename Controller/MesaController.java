@@ -1,5 +1,8 @@
 package Controller;
 import Model.Mesa;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -26,4 +29,17 @@ public class MesaController {
         }
         return null;
     }
+  public static void salvarMesas() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("mesas.txt"))) {
+        for (Mesa mesa : mesas) {
+            String linha = mesa.getNumeroMesa() + ";" + mesa.getCapacidade() + ";" + mesa.isDisponivel();
+            writer.write(linha);
+            writer.newLine();
+        }
+        System.out.println("Mesas salvas com sucesso no arquivo mesas.txt");
+    } catch (IOException e) {
+        System.out.println("Erro ao salvar mesas: " + e.getMessage());
+    }
+}
+
 }

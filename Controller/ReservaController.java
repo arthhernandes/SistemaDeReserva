@@ -3,6 +3,9 @@ package Controller;
 import Model.Cliente;
 import Model.Mesa;
 import Model.Reserva;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import java.util.ArrayList;
 
@@ -49,5 +52,23 @@ public class ReservaController {
     public static ArrayList<Reserva> getReservas() {
         return reservas;
     }
+    public static void salvarReservas() {
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("reservas.txt"))) {
+        for (Reserva reserva : reservas) {
+            String linha = reserva.getIdReserva() + ";" +
+                           reserva.getCliente().getId() + ";" +
+                           reserva.getCliente().getNome() + ";" +
+                           reserva.getCliente().getSobrenome() + ";" +
+                           reserva.getCliente().getTelefone() + ";" +
+                           reserva.getMesa().getNumeroMesa() + ";" +
+                           reserva.getDataHora();
+            writer.write(linha);
+            writer.newLine();
+        }
+        System.out.println("Reservas salvas com sucesso no arquivo reservas.txt");
+    } catch (IOException e) {
+        System.out.println("Erro ao salvar reservas: " + e.getMessage());
+    }
+}
 
 }
