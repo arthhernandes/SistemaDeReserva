@@ -65,6 +65,8 @@ public class MainView {
         String sobrenome = InputHelper.getString("Digite o sobrenome do cliente: ");
         String telefone = InputHelper.getString("Digite o telefone do cliente: ");
         ClienteController.cadastrarCliente(id, nome, sobrenome, telefone);
+        ClienteController.salvarClientes();
+        
     }
 
     private static void listarClientes() {
@@ -77,6 +79,7 @@ public class MainView {
         int numero = InputHelper.getInt("Digite o número da mesa: ");
         int capacidade = InputHelper.getInt("Digite a capacidade da mesa: ");
         MesaController.adicionarMesa(numero, capacidade);
+        MesaController.salvarMesas();
     }
 
     private static void listarMesas() {
@@ -104,6 +107,7 @@ public class MainView {
 
         String dataHora = InputHelper.getString("Digite a data e hora da reserva (Ex: 12-06-2025 19:00): ");
         ReservaController.criarReserva(cliente, mesa, dataHora);
+        ReservaController.salvarReservas();
     }
 
     private static void listarReservas() {
